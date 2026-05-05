@@ -182,13 +182,6 @@
     <footer>
         &copy; Created by: Naseem 217
     </footer>
-  <script type="module">
-  import { auth, onAuthStateChanged } from "./js/firebase.js";
-  
-  onAuthStateChanged(auth, (user) => {
-    if (!user) window.location.href = "auth.html"; // Kick out if not logged in
-  });
-</script>
 <!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
@@ -219,7 +212,16 @@
   
   // Make available in console for debugging (optional)
   window.firebase = firebase;
- </script>
+
+  // Redirect logic
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      window.location.href = "dashboard.html";
+    } else {
+      window.location.href = "auth.html";
+    }
+  });
+</script>
 
 <script type="module">
   import { app, analytics } from './js/firebase.js';
