@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - KhudKamao</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --secondary: #2E7D32;
+            --accent: #8BC34A;
+            --dark: #1B5E20;
+            --light: #C8E6C9;
+            --text: #333;
+            --light-text: #f5f5f5;
+            --card-bg: #fff;
+            --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f7;
+            color: var(--text);
+        }
+
+        .profile-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-left img {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+        }
+
+        .header-left h1 {
+            font-size: 1.2rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .balance {
+            background-color: var(--dark);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .profile-main {
+            padding: 1.5rem;
+            padding-bottom: 80px;
+        }
+
+        .profile-info {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .profile-pic {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .profile-pic img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--light);
+        }
+
+        .edit-pic {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 30px;
+            height: 30px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .profile-details h2 {
+            font-size: 1.3rem;
+            color: var(--dark);
+            margin-bottom: 0.3rem;
+        }
+
+        .profile-details p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .action-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .action-item:hover {
+            transform: translateY(-3px);
+        }
+
+        .action-item i {
+            font-size: 1.2rem;
+            color: var(--primary);
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .action-item span {
+            font-weight: 500;
+            flex: 1;
+        }
+
+        .profile-stats {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .profile-stats h3 {
+            font-size: 1.1rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 0.8rem;
+            background-color: var(--light);
+            border-radius: 8px;
+        }
+
+        .stat-value {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary);
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--card-bg);
+            display: flex;
+            justify-content: space-around;
+            padding: 0.8rem 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #666;
+            font-size: 0.7rem;
+        }
+
+        .nav-item i {
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 15px;
+            overflow: hidden;
+            animation: modalFadeIn 0.3s;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 1rem;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 1.2rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .modal-footer {
+            padding: 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn.secondary {
+            background-color: #e0e0e0;
+            color: #333;
+        }
+
+        .btn.primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        @media (min-width: 768px) {
+            .profile-info {
+                flex-direction: row;
+                text-align: left;
+                align-items: center;
+                gap: 2rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="profile-header">
+        <div class="header-left">
+            <img src="assets/logo.png" alt="KhudKamao Logo">
+            <h1>Profile</h1>
+        </div>
+        <div class="header-right">
+            <div class="balance">₹125.50</div>
+        </div>
+    </header>
+
+    <main class="profile-main">
+        <div class="profile-info">
+            <div class="profile-pic">
+                <img src="assets/default-profile.png" alt="Profile Picture" id="profileImage">
+                <button class="edit-pic" id="changeProfilePic">
+                    <i class="fas fa-camera"></i>
+                </button>
+                <input type="file" id="profilePicInput" accept="image/*" style="display: none;">
+            </div>
+            <div class="profile-details">
+                <h2 id="userName">Rakib Khan</h2>
+                <p id="userEmail">rakib@example.com</p>
+                <p>Member since: <span id="joinDate">Jan 2023</span></p>
+            </div>
+        </div>
+
+        <div class="profile-actions">
+            <div class="action-item" id="editProfileBtn">
+                <i class="fas fa-user-edit"></i>
+                <span>Edit Profile</span>
+            </div>
+            <div class="action-item" id="changePasswordBtn">
+                <i class="fas fa-lock"></i>
+                <span>Change Password</span>
+            </div>
+            <div class="action-item" id="switchModeBtn">
+                <i class="fas fa-exchange-alt"></i>
+                <span>Switch to Publisher Mode</span>
+            </div>
+            <div class="action-item" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </div>
+        </div>
+
+        <div class="profile-stats">
+            <h3>Your Stats</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-value" id="completedTasks">24</span>
+                    <span class="stat-label">Tasks Completed</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="earnedAmount">₹1,250</span>
+                    <span class="stat-label">Total Earned</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="withdrawnAmount">₹1,125</span>
+                    <span class="stat-label">Total Withdrawn</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="activeTasks">3</span>
+                    <span class="stat-label">Active Tasks</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="tasks.html" class="nav-item">
+            <i class="fas fa-tasks"></i>
+            <span>Tasks</span>
+        </a>
+        <a href="help.html" class="nav-item">
+            <i class="fas fa-question-circle"></i>
+            <span>Help</span>
+        </a>
+        <a href="profile.html" class="nav-item active">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <!-- Edit Profile Modal -->
+    <div class="modal" id="editProfileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Profile</h3>
+                <button class="close-btn" id="closeEditProfileModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="editName">Full Name</label>
+                    <input type="text" id="editName" placeholder="Enter your full name" value="Rakib Khan">
+                </div>
+                <div class="form-group">
+                    <label for="editEmail">Email</label>
+                    <input type="email" id="editEmail" placeholder="Enter your email" value="rakib@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="editPhone">Phone Number</label>
+                    <input type="tel" id="editPhone" placeholder="Enter your phone number" value="+923001234567">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary" id="cancelEditProfile">Cancel</button>
+                <button class="btn primary" id="saveProfile">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div class="modal" id="changePasswordModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Change Password</h3>
+                <button class="close-btn" id="closeChangePasswordModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="currentPassword">Current Password</label>
+                    <input type="password" id="currentPassword" placeholder="Enter current password">
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" id="newPassword" placeholder="Enter new password">
+                </div>
+                <div class="form-group">
+                    <label for="confirmNewPassword">Confirm New Password</label>
+                    <input type="password" id="confirmNewPassword" placeholder="Confirm new password">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary" id="cancelChangePassword">Cancel</button>
+                <button class="btn primary" id="savePassword">Change Password</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const changeProfilePic = document.getElementById('changeProfilePic');
+        const profilePicInput = document.getElementById('profilePicInput');
+        const profileImage = document.getElementById('profileImage');
+        const editProfileBtn = document.getElementById('editProfileBtn');
+        const changePasswordBtn = document.getElementById('changePasswordBtn');
+        const switchModeBtn = document.getElementById('switchModeBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const editProfileModal = document.getElementById('editProfileModal');
+        const closeEditProfileModal = document.getElementById('closeEditProfileModal');
+        const cancelEditProfile = document.getElementById('cancelEditProfile');
+        const saveProfile = document.getElementById('saveProfile');
+        const changePasswordModal = document.getElementById('changePasswordModal');
+        const closeChangePasswordModal = document.getElementById('closeChangePasswordModal');
+        const cancelChangePassword = document.getElementById('cancelChangePassword');
+        const savePassword = document.getElementById('savePassword');
+
+        // Change profile picture
+        changeProfilePic.addEventListener('click', () => {
+            profilePicInput.click();
+        });
+
+        profilePicInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    profileImage.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Edit profile
+        editProfileBtn.addEventListener('click', () => {
+            editProfileModal.style.display = 'flex';
+        });
+
+        closeEditProfileModal.addEventListener('click', () => editProfileModal.style.display = 'none');
+        cancelEditProfile.addEventListener('click', () => editProfileModal.style.display = 'none');
+
+        saveProfile.addEventListener('click', () => {
+            const name = document.getElementById('editName').value;
+            const email = document.getElementById('editEmail').value;
+            const phone = document.getElementById('editPhone').value;
+            
+            if (!name || !email) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            document.getElementById('userName').textContent = name;
+            document.getElementById('userEmail').textContent = email;
+            alert('Profile updated successfully!');
+            editProfileModal.style.display = 'none';
+        });
+
+        // Change password
+        changePasswordBtn.addEventListener('click', () => {
+            changePasswordModal.style.display = 'flex';
+        });
+
+        closeChangePasswordModal.addEventListener('click', () => changePasswordModal.style.display = 'none');
+        cancelChangePassword.addEventListener('click', () => changePasswordModal.style.display = 'none');
+
+        savePassword.addEventListener('click', () => {
+            const currentPass = document.getElementById('currentPassword').value;
+            const newPass = document.getElementById('newPassword').value;
+            const confirmPass = document.getElementById('confirmNewPassword').value;
+            
+            if (!currentPass || !newPass || !confirmPass) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            if (newPass !== confirmPass) {
+                alert('New passwords do not match');
+                return;
+            }
+            
+            alert('Password changed successfully!');
+            changePasswordModal.style.display = 'none';
+            
+            // Reset form
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmNewPassword').value = '';
+        });
+
+        // Switch mode
+        switchModeBtn.addEventListener('click', () => {
+            if (confirm('Switch to Publisher Mode? You\'ll be able to create tasks.')) {
+                window.location.href = 'publisher.html';
+            }
+        });
+
+        // Logout
+        logoutBtn.addEventListener('click', () => {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = 'auth.html';
+            }
+        });
+
+        // Close modals when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === editProfileModal) editProfileModal.style.display = 'none';
+            if (e.target === changePasswordModal) changePasswordModal.style.display = 'none';
+        });
+    </script>
+document.getElementById("logoutBtn").addEventListener("click", () => {
+  auth.signOut().then(() => {
+    window.location.href = "auth.html";
+  });
+});
+  <script type="module">
+  import { auth, onAuthStateChanged } from "./js/firebase.js";
+  
+  onAuthStateChanged(auth, (user) => {
+    if (!user) window.location.href = "auth.html"; // Kick out if not logged in
+  });
+</script>
+
+<script type="module">
+  import { app, analytics } from './js/firebase.js';
+  console.log("Firebase initialized:", app);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Center - KhudKamao</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --secondary: #2E7D32;
+            --accent: #8BC34A;
+            --dark: #1B5E20;
+            --light: #C8E6C9;
+            --text: #333;
+            --light-text: #f5f5f5;
+            --card-bg: #fff;
+            --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            --whatsapp: #25D366;
+            --email: #D44638;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f7;
+            color: var(--text);
+        }
+
+        .help-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-left img {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+        }
+
+        .header-left h1 {
+            font-size: 1.2rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .balance {
+            background-color: var(--dark);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .help-main {
+            padding: 1.5rem;
+            padding-bottom: 80px;
+        }
+
+        .help-section {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .help-section h2 {
+            font-size: 1.2rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .video-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .video-item {
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .video-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .video-item i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .video-item p {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .contact-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .contact-btn {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: transform 0.3s;
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .contact-btn i {
+            font-size: 1.5rem;
+        }
+
+        .whatsapp-btn {
+            background-color: var(--whatsapp);
+        }
+
+        .email-btn {
+            background-color: var(--email);
+        }
+
+        .faq-container {
+            margin-top: 1rem;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #eee;
+            padding: 1rem 0;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .faq-question h3 {
+            font-size: 1rem;
+            color: var(--dark);
+        }
+
+        .faq-question i {
+            color: var(--primary);
+            transition: transform 0.3s;
+        }
+
+        .faq-question.active i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .faq-answer p {
+            padding-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--card-bg);
+            display: flex;
+            justify-content: space-around;
+            padding: 0.8rem 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #666;
+            font-size: 0.7rem;
+        }
+
+        .nav-item i {
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        @media (min-width: 768px) {
+            .video-container {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            .contact-options {
+                flex-direction: row;
+            }
+            
+            .contact-btn {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="help-header">
+        <div class="header-left">
+            <img src="assets/logo.png" alt="KhudKamao Logo">
+            <h1>Help Center</h1>
+        </div>
+        <div class="header-right">
+            <div class="balance">₹125.50</div>
+        </div>
+    </header>
+
+    <main class="help-main">
+        <div class="help-section">
+            <h2><i class="fas fa-video"></i> Video Tutorials</h2>
+            <div class="video-container">
+                <div class="video-item">
+                    <i class="fas fa-play-circle"></i>
+                    <p>How to Complete Tasks</p>
+                </div>
+                <div class="video-item">
+                    <i class="fas fa-play-circle"></i>
+                    <p>How to Withdraw Money</p>
+                </div>
+                <div class="video-item">
+                    <i class="fas fa-play-circle"></i>
+                    <p>How to Deposit Funds</p>
+                </div>
+                <div class="video-item">
+                    <i class="fas fa-play-circle"></i>
+                    <p>Publisher Mode Guide</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="help-section">
+            <h2><i class="fas fa-headset"></i> Contact Support</h2>
+            <div class="contact-options">
+                <a href="https://wa.me/923452733505" class="contact-btn whatsapp-btn">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>WhatsApp: +923452733505</span>
+                </a>
+                <a href="mailto:gulnaseem912@gmail.com" class="contact-btn email-btn">
+                    <i class="fas fa-envelope"></i>
+                    <span>Email: gulnaseem912@gmail.com</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="help-section">
+            <h2><i class="fas fa-question-circle"></i> FAQs</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>How do I withdraw my earnings?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Go to your Dashboard and click on the Withdraw button. Select your preferred payment method (Easypaisa, Jazzcash, or Upaisa), enter the amount (minimum ₹500), account details, and submit your request. Withdrawals are processed within 24 hours.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>How long does task approval take?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Most tasks are reviewed within 24-48 hours. You'll receive a notification when your submission is approved. If additional verification is needed, our team may contact you via WhatsApp or email.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>What if my task is rejected?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>If your submission doesn't meet requirements, you'll receive a reason for rejection. You may resubmit with proper proof if the task is still available. Repeated rejections may affect your account rating.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>How to switch to Publisher mode?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Go to your Profile page and click "Switch to Publisher Mode". You'll need to complete publisher verification first. In publisher mode, you can create tasks and monitor their completion.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="tasks.html" class="nav-item">
+            <i class="fas fa-tasks"></i>
+            <span>Tasks</span>
+        </a>
+        <a href="help.html" class="nav-item active">
+            <i class="fas fa-question-circle"></i>
+            <span>Help</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <script>
+        // FAQ Accordion Functionality
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const isActive = question.classList.contains('active');
+                
+                // Close all answers first
+                document.querySelectorAll('.faq-answer').forEach(ans => {
+                    ans.style.maxHeight = null;
+                });
+                document.querySelectorAll('.faq-question').forEach(q => {
+                    q.classList.remove('active');
+                });
+                
+                // Open current if wasn't active
+                if (!isActive) {
+                    question.classList.add('active');
+                    answer.style.maxHeight = answer.scrollHeight + 'px';
+                }
+            });
+        });
+
+        // Auto-open first FAQ item
+        if (faqQuestions.length > 0) {
+            faqQuestions[0].classList.add('active');
+            faqQuestions[0].nextElementSibling.style.maxHeight = 
+                faqQuestions[0].nextElementSibling.scrollHeight + 'px';
+        }
+    </script>
+  <script type="module">
+  import { auth, onAuthStateChanged } from "./js/firebase.js";
+  
+  onAuthStateChanged(auth, (user) => {
+    if (!user) window.location.href = "auth.html"; // Kick out if not logged in
+  });
+</script>
+
+<script type="module">
+  import { app, analytics } from './js/firebase.js';
+  console.log("Firebase initialized:", app);
+</script>
+
+</body>
+</html>

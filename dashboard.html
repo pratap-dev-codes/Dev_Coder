@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - KhudKamao</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --secondary: #2E7D32;
+            --accent: #8BC34A;
+            --dark: #1B5E20;
+            --light: #C8E6C9;
+            --text: #333;
+            --light-text: #f5f5f5;
+            --card-bg: #fff;
+            --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f7;
+            color: var(--text);
+        }
+
+        .dashboard-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-left img {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+        }
+
+        .header-left h1 {
+            font-size: 1.2rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .balance {
+            background-color: var(--dark);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--light);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .profile-icon i {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .dashboard-main {
+            padding: 1.5rem;
+            padding-bottom: 80px;
+        }
+
+        .stats-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            flex: 1;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.2rem;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .stat-card i {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card h3 {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card p {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .wallet-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .wallet-btn {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--card-bg);
+            border: none;
+            border-radius: 12px;
+            padding: 1.2rem;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .wallet-btn:hover {
+            transform: translateY(-5px);
+        }
+
+        .wallet-btn i {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .wallet-btn span {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .recent-activity {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .recent-activity h2 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--light);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .activity-icon i {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .activity-details {
+            flex: 1;
+        }
+
+        .activity-details h4 {
+            font-size: 0.9rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .activity-details p {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .activity-status {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.3rem 0.6rem;
+            border-radius: 12px;
+            background-color: #e0e0e0;
+            color: #666;
+        }
+
+        .activity-status.completed {
+            background-color: var(--light);
+            color: var(--secondary);
+        }
+
+        .activity-status.pending {
+            background-color: #fff3e0;
+            color: #ff9800;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--card-bg);
+            display: flex;
+            justify-content: space-around;
+            padding: 0.8rem 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #666;
+            font-size: 0.7rem;
+        }
+
+        .nav-item i {
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 15px;
+            overflow: hidden;
+            animation: modalFadeIn 0.3s;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 1rem;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 1.2rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-group input, 
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus, 
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .modal-footer {
+            padding: 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn.secondary {
+            background-color: #e0e0e0;
+            color: #333;
+        }
+
+        .btn.primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .stats-container {
+                flex-direction: column;
+            }
+            
+            .wallet-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="dashboard-header">
+        <div class="header-left">
+            <img src="assets/logo.png" alt="KhudKamao Logo">
+            <h1>Dashboard</h1>
+        </div>
+        <div class="header-right">
+            <div class="balance">₹125.50</div>
+            <div class="profile-icon" id="profileBtn">
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
+    </header>
+
+    <main class="dashboard-main">
+        <div class="stats-container">
+            <div class="stat-card">
+                <i class="fas fa-rupee-sign"></i>
+                <h3>Total Earned</h3>
+                <p>₹1,250.00</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-wallet"></i>
+                <h3>Total Withdrawn</h3>
+                <p>₹1,124.50</p>
+            </div>
+        </div>
+
+        <div class="wallet-actions">
+            <button class="wallet-btn" id="withdrawBtn">
+                <i class="fas fa-money-bill-wave"></i>
+                <span>Withdraw</span>
+            </button>
+            <button class="wallet-btn" id="depositBtn">
+                <i class="fas fa-coins"></i>
+                <span>Deposit</span>
+            </button>
+        </div>
+
+        <div class="recent-activity">
+            <h2>Recent Activity</h2>
+            <div class="activity-list" id="activityList">
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <div class="activity-details">
+                        <h4>Completed Task: Install App</h4>
+                        <p>Today - ₹15.00</p>
+                    </div>
+                    <div class="activity-status completed">Completed</div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div class="activity-details">
+                        <h4>Withdrawal to Easypaisa</h4>
+                        <p>Yesterday - ₹500.00</p>
+                    </div>
+                    <div class="activity-status completed">Completed</div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <div class="activity-details">
+                        <h4>Task: Subscribe Channel</h4>
+                        <p>2 days ago - ₹8.00</p>
+                    </div>
+                    <div class="activity-status pending">Pending</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="tasks.html" class="nav-item">
+            <i class="fas fa-tasks"></i>
+            <span>Tasks</span>
+        </a>
+        <a href="help.html" class="nav-item">
+            <i class="fas fa-question-circle"></i>
+            <span>Help</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <!-- Withdraw Modal -->
+    <div class="modal" id="withdrawModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Withdraw Funds</h3>
+                <button class="close-btn" id="closeWithdrawModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="withdrawAmount">Amount (₹)</label>
+                    <input type="number" id="withdrawAmount" placeholder="Minimum ₹500">
+                </div>
+                <div class="form-group">
+                    <label for="withdrawMethod">Payment Method</label>
+                    <select id="withdrawMethod">
+                        <option value="">Select Method</option>
+                        <option value="easypaisa">Easypaisa</option>
+                        <option value="jazzcash">Jazzcash</option>
+                        <option value="upaisa">Upaisa</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="accountNumber">Account Number</label>
+                    <input type="text" id="accountNumber" placeholder="Enter account number">
+                </div>
+                <div class="form-group">
+                    <label for="accountName">Account Name</label>
+                    <input type="text" id="accountName" placeholder="Enter account name">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary" id="cancelWithdraw">Cancel</button>
+                <button class="btn primary" id="confirmWithdraw">Withdraw</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deposit Modal -->
+    <div class="modal" id="depositModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Deposit Funds</h3>
+                <button class="close-btn" id="closeDepositModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="depositAmount">Amount (₹)</label>
+                    <input type="number" id="depositAmount" placeholder="Enter amount">
+                </div>
+                <div class="form-group">
+                    <label for="depositMethod">Payment Method</label>
+                    <select id="depositMethod">
+                        <option value="">Select Method</option>
+                        <option value="easypaisa">Easypaisa</option>
+                        <option value="jazzcash">Jazzcash</option>
+                        <option value="upaisa">Upaisa</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="accountNameDeposit">Account Name</label>
+                    <input type="text" id="accountNameDeposit" placeholder="Your account name">
+                </div>
+                <div class="form-group">
+                    <label for="accountNumberDeposit">Account Number</label>
+                    <input type="text" id="accountNumberDeposit" placeholder="Your account number">
+                </div>
+                <div class="form-group">
+                    <label for="transactionId">Transaction ID/TID</label>
+                    <input type="text" id="transactionId" placeholder="Enter transaction ID">
+                </div>
+                <div class="form-group">
+                    <label for="screenshot">Screenshot Proof</label>
+                    <input type="file" id="screenshot" accept="image/*">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary" id="cancelDeposit">Cancel</button>
+                <button class="btn primary" id="confirmDeposit">Deposit</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const withdrawBtn = document.getElementById('withdrawBtn');
+        const depositBtn = document.getElementById('depositBtn');
+        const withdrawModal = document.getElementById('withdrawModal');
+        const closeWithdrawModal = document.getElementById('closeWithdrawModal');
+        const cancelWithdraw = document.getElementById('cancelWithdraw');
+        const confirmWithdraw = document.getElementById('confirmWithdraw');
+        const depositModal = document.getElementById('depositModal');
+        const closeDepositModal = document.getElementById('closeDepositModal');
+        const cancelDeposit = document.getElementById('cancelDeposit');
+        const confirmDeposit = document.getElementById('confirmDeposit');
+        const profileBtn = document.getElementById('profileBtn');
+
+        // Withdraw button click
+        withdrawBtn.addEventListener('click', () => {
+            withdrawModal.style.display = 'flex';
+        });
+
+        // Deposit button click
+        depositBtn.addEventListener('click', () => {
+            depositModal.style.display = 'flex';
+        });
+
+        // Close modals
+        closeWithdrawModal.addEventListener('click', () => withdrawModal.style.display = 'none');
+        cancelWithdraw.addEventListener('click', () => withdrawModal.style.display = 'none');
+        closeDepositModal.addEventListener('click', () => depositModal.style.display = 'none');
+        cancelDeposit.addEventListener('click', () => depositModal.style.display = 'none');
+
+        // Confirm withdrawal
+        confirmWithdraw.addEventListener('click', () => {
+            const amount = parseFloat(document.getElementById('withdrawAmount').value);
+            const method = document.getElementById('withdrawMethod').value;
+            const accountNumber = document.getElementById('accountNumber').value;
+            const accountName = document.getElementById('accountName').value;
+
+            if (!amount || amount < 500) {
+                alert('Minimum withdrawal amount is ₹500');
+                return;
+            }
+
+            if (!method) {
+                alert('Please select a payment method');
+                return;
+            }
+
+            if (!accountNumber || !accountName) {
+                alert('Please enter account details');
+                return;
+            }
+
+            alert(`Withdrawal request of ₹${amount} via ${method} has been submitted.`);
+            withdrawModal.style.display = 'none';
+            
+            // Reset form
+            document.getElementById('withdrawAmount').value = '';
+            document.getElementById('withdrawMethod').value = '';
+            document.getElementById('accountNumber').value = '';
+            document.getElementById('accountName').value = '';
+        });
+
+        // Confirm deposit
+        confirmDeposit.addEventListener('click', () => {
+            const amount = parseFloat(document.getElementById('depositAmount').value);
+            const method = document.getElementById('depositMethod').value;
+            const accountName = document.getElementById('accountNameDeposit').value;
+            const accountNumber = document.getElementById('accountNumberDeposit').value;
+            const transactionId = document.getElementById('transactionId').value;
+            const screenshot = document.getElementById('screenshot').files[0];
+
+            if (!amount || amount <= 0) {
+                alert('Please enter a valid amount');
+                return;
+            }
+
+            if (!method) {
+                alert('Please select a payment method');
+                return;
+            }
+
+            if (!accountName || !accountNumber || !transactionId) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            if (!screenshot) {
+                alert('Please upload a screenshot proof');
+                return;
+            }
+
+            alert('Deposit request submitted successfully. It will be processed after verification.');
+            depositModal.style.display = 'none';
+        });
+
+        // Profile button click
+        profileBtn.addEventListener('click', () => {
+            window.location.href = 'profile.html';
+        });
+
+        // Close modals when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === withdrawModal) withdrawModal.style.display = 'none';
+            if (e.target === depositModal) depositModal.style.display = 'none';
+        });
+    </script>
+   <script type="module">
+  import { auth, onAuthStateChanged } from "./js/firebase.js";
+  
+  onAuthStateChanged(auth, (user) => {
+    if (!user) window.location.href = "auth.html"; // Kick out if not logged in
+  });
+</script>
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
+
+<!-- Your Firebase configuration -->
+<script>
+  // Your Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyABxcfIoLd9ZfaUaxh3qb9M2tPMbpen7C0",
+    authDomain: "khudkamao0.firebaseapp.com",
+    databaseURL: "https://khudkamao0-default-rtdb.firebaseio.com",
+    projectId: "khudkamao0",
+    storageBucket: "khudkamao0.appspot.com",
+    messagingSenderId: "543074913573",
+    appId: "1:543074913573:web:ea6c7c6f6108500ac45ecc",
+    measurementId: "G-LYBCVYXP2R"
+  };
+
+  // Initialize Firebase
+  const app = firebase.initializeApp(firebaseConfig);
+  const analytics = firebase.analytics();
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+  const storage = firebase.storage();
+  
+  // Make available in console for debugging (optional)
+  window.firebase = firebase;
+</script>
+
+<script type="module">
+  import { app, analytics } from './js/firebase.js';
+  console.log("Firebase initialized:", app);
+</script>
+
+</body>
+</html>

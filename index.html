@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KhudKamao - Earn Money Online</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --secondary: #2E7D32;
+            --accent: #8BC34A;
+            --dark: #1B5E20;
+            --light: #C8E6C9;
+            --text: #333;
+            --light-text: #f5f5f5;
+            --card-bg: #fff;
+            --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: var(--text);
+        }
+
+        .landing-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 1.5rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            object-fit: contain;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: #555;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 2rem 0;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+            width: 100%;
+        }
+
+        .feature {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
+            width: 280px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .feature:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .feature h3 {
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .feature p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .tagline {
+                font-size: 1rem;
+            }
+            
+            .features {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .feature {
+                width: 100%;
+                max-width: 350px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="landing-container">
+        <img src="assets/logo.png" alt="KhudKamao Logo" class="logo">
+        <h1>KhudKamao</h1>
+        <p class="tagline">Earn money by completing simple tasks</p>
+        
+        <a href="auth.html" class="cta-button">Get Started</a>
+        
+        <div class="features">
+            <div class="feature">
+                <i class="fas fa-rupee-sign"></i>
+                <h3>Earn Money</h3>
+                <p>Complete tasks and withdraw to your wallet</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-tasks"></i>
+                <h3>Simple Tasks</h3>
+                <p>Install apps, subscribe channels, and more</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-wallet"></i>
+                <h3>Easy Withdrawals</h3>
+                <p>Withdraw via Easypaisa, Jazzcash, or Upaisa</p>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        &copy; Created by: Naseem 217
+    </footer>
+  <script type="module">
+  import { auth, onAuthStateChanged } from "./js/firebase.js";
+  
+  onAuthStateChanged(auth, (user) => {
+    if (!user) window.location.href = "auth.html"; // Kick out if not logged in
+  });
+</script>
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
+
+<!-- Your Firebase configuration -->
+<script>
+  // Your Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyABxcfIoLd9ZfaUaxh3qb9M2tPMbpen7C0",
+    authDomain: "khudkamao0.firebaseapp.com",
+    databaseURL: "https://khudkamao0-default-rtdb.firebaseio.com",
+    projectId: "khudkamao0",
+    storageBucket: "khudkamao0.appspot.com",
+    messagingSenderId: "543074913573",
+    appId: "1:543074913573:web:ea6c7c6f6108500ac45ecc",
+    measurementId: "G-LYBCVYXP2R"
+  };
+
+  // Initialize Firebase
+  const app = firebase.initializeApp(firebaseConfig);
+  const analytics = firebase.analytics();
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+  const storage = firebase.storage();
+  
+  // Make available in console for debugging (optional)
+  window.firebase = firebase;
+ </script>
+
+<script type="module">
+  import { app, analytics } from './js/firebase.js';
+  console.log("Firebase initialized:", app);
+</script>
+
+</body>
+</html>

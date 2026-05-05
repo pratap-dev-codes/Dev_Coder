@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasks - KhudKamao</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --secondary: #2E7D32;
+            --accent: #8BC34A;
+            --dark: #1B5E20;
+            --light: #C8E6C9;
+            --text: #333;
+            --light-text: #f5f5f5;
+            --card-bg: #fff;
+            --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f7;
+            color: var(--text);
+        }
+
+        .tasks-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-left img {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+        }
+
+        .header-left h1 {
+            font-size: 1.2rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .balance {
+            background-color: var(--dark);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .tasks-main {
+            padding: 1.5rem;
+            padding-bottom: 80px;
+        }
+
+        .tasks-filter {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+
+        .filter-btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 20px;
+            background-color: #e0e0e0;
+            font-size: 0.9rem;
+            font-weight: 500;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .tasks-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .task-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.2rem;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .task-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .task-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .task-reward {
+            background-color: var(--light);
+            color: var(--secondary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .task-description {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .task-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .task-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-top: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .task-btn:hover {
+            background-color: var(--secondary);
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--card-bg);
+            display: flex;
+            justify-content: space-around;
+            padding: 0.8rem 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #666;
+            font-size: 0.7rem;
+        }
+
+        .nav-item i {
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        /* Task Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 15px;
+            overflow: hidden;
+            animation: modalFadeIn 0.3s;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 1rem;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 1.2rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .task-modal-reward {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .task-modal-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .task-modal-section h4 {
+            font-size: 1rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .task-modal-section p {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .task-modal-section ul {
+            padding-left: 1.2rem;
+            margin-top: 0.5rem;
+        }
+
+        .task-modal-section li {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .proof-upload {
+            margin-top: 1.5rem;
+        }
+
+        .proof-upload label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .proof-upload input[type="file"] {
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .proof-upload textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .modal-footer {
+            padding: 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn.secondary {
+            background-color: #e0e0e0;
+            color: #333;
+        }
+
+        .btn.primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        @media (min-width: 768px) {
+            .tasks-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="tasks-header">
+        <div class="header-left">
+            <img src="assets/logo.png" alt="KhudKamao Logo">
+            <h1>Tasks</h1>
+        </div>
+        <div class="header-right">
+            <div class="balance">₹125.50</div>
+        </div>
+    </header>
+
+    <main class="tasks-main">
+        <div class="tasks-filter">
+            <button class="filter-btn active">All Tasks</button>
+            <button class="filter-btn">Install Apps</button>
+            <button class="filter-btn">Subscribe</button>
+            <button class="filter-btn">Follow</button>
+            <button class="filter-btn">Watch Videos</button>
+            <button class="filter-btn">Surveys</button>
+        </div>
+
+        <div class="tasks-container" id="tasksList">
+            <div class="task-card">
+                <div class="task-header">
+                    <h3 class="task-title">Install & Review App</h3>
+                    <div class="task-reward">₹15.00</div>
+                </div>
+                <p class="task-description">Download and install the app from Play Store, use it for 3 days, and give a 5-star review.</p>
+                <div class="task-meta">
+                    <span><i class="far fa-clock"></i> 3 days</span>
+                    <span>25/100 completed</span>
+                </div>
+                <button class="task-btn start-task">Start Task</button>
+            </div>
+
+            <div class="task-card">
+                <div class="task-header">
+                    <h3 class="task-title">Subscribe YouTube Channel</h3>
+                    <div class="task-reward">₹8.00</div>
+                </div>
+                <p class="task-description">Subscribe to our YouTube channel and stay subscribed for at least 7 days.</p>
+                <div class="task-meta">
+                    <span><i class="far fa-clock"></i> 7 days</span>
+                    <span>42/100 completed</span>
+                </div>
+                <button class="task-btn start-task">Start Task</button>
+            </div>
+
+            <div class="task-card">
+                <div class="task-header">
+                    <h3 class="task-title">Follow Instagram Page</h3>
+                    <div class="task-reward">₹12.00</div>
+                </div>
+                <p class="task-description">Follow our Instagram page and like 2 recent posts. Stay following for 14 days.</p>
+                <div class="task-meta">
+                    <span><i class="far fa-clock"></i> 14 days</span>
+                    <span>18/50 completed</span>
+                </div>
+                <button class="task-btn start-task">Start Task</button>
+            </div>
+
+            <div class="task-card">
+                <div class="task-header">
+                    <h3 class="task-title">Watch Video & Like</h3>
+                    <div class="task-reward">₹5.00</div>
+                </div>
+                <p class="task-description">Watch the YouTube video for at least 1 minute and like it. Don't dislike for 24 hours.</p>
+                <div class="task-meta">
+                    <span><i class="far fa-clock"></i> 1 day</span>
+                    <span>75/200 completed</span>
+                </div>
+                <button class="task-btn start-task">Start Task</button>
+            </div>
+        </div>
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="tasks.html" class="nav-item active">
+            <i class="fas fa-tasks"></i>
+            <span>Tasks</span>
+        </a>
+        <a href="help.html" class="nav-item">
+            <i class="fas fa-question-circle"></i>
+            <span>Help</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <!-- Task Modal -->
+    <div class="modal" id="taskModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Task Details</h3>
+                <button class="close-btn" id="closeTaskModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="task-modal-reward">Reward: ₹15.00</div>
+                
+                <div class="task-modal-section">
+                    <h4>Description</h4>
+                    <p>Download and install the app from Play Store, use it for 3 days, and give a 5-star review. Make sure to keep the app installed for the full duration to receive your reward.</p>
+                </div>
+                
+                <div class="task-modal-section">
+                    <h4>Requirements</h4>
+                    <ul>
+                        <li>Android device with Play Store</li>
+                        <li>Internet connection</li>
+                        <li>Google account</li>
+                        <li>Keep app installed for 3 days</li>
+                    </ul>
+                </div>
+                
+                <div class="task-modal-section">
+                    <h4>Steps to Complete</h4>
+                    <ol>
+                        <li>Click the download button below</li>
+                        <li>Install and open the app</li>
+                        <li>Use it for at least 5 minutes</li>
+                        <li>Give a 5-star review on Play Store</li>
+                        <li>Keep installed for 3 days</li>
+                    </ol>
+                </div>
+                
+                <div class="proof-upload">
+                    <h4>Submit Proof</h4>
+                    <label for="taskScreenshot">Upload Screenshot:</label>
+                    <input type="file" id="taskScreenshot" accept="image/*">
+                    
+                    <label for="taskNotes" style="margin-top: 1rem;">Additional Notes:</label>
+                    <textarea id="taskNotes" placeholder="Any additional information or comments..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary" id="cancelTask">Cancel</button>
+                <button class="btn primary" id="submitTask">Submit Task</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const taskModal = document.getElementById('taskModal');
+        const closeTaskModal = document.getElementById('closeTaskModal');
+        const cancelTask = document.getElementById('cancelTask');
+        const submitTask = document.getElementById('submitTask');
+        const startTaskBtns = document.querySelectorAll('.start-task');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+
+        // Open task modal when clicking on Start Task
+        startTaskBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                taskModal.style.display = 'flex';
+            });
+        });
+
+        // Close task modal
+        closeTaskModal.addEventListener('click', () => taskModal.style.display = 'none');
+        cancelTask.addEventListener('click', () => taskModal.style.display = 'none');
+
+        // Submit task
+        submitTask.addEventListener('click', () => {
+            const screenshot = document.getElementById('taskScreenshot').files[0];
+            const notes = document.getElementById('taskNotes').value;
+            
+            if (!screenshot) {
+                alert('Please upload a screenshot as proof');
+                return;
+            }
+            
+            alert('Task submitted successfully! It will be reviewed shortly.');
+            taskModal.style.display = 'none';
+            
+            // Reset form
+            document.getElementById('taskScreenshot').value = '';
+            document.getElementById('taskNotes').value = '';
+        });
+
+        // Filter tasks
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                // Here you would filter tasks based on the selected category
+            });
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === taskModal) taskModal.style.display = 'none';
+        });
+    </script>
+  <script type="module">
+  import { auth, db, storage, ref, uploadBytes, getDownloadURL, addDoc, collection } from "./js/firebase.js";
+
+  document.getElementById("submitTask").addEventListener("click", async () => {
+    const file = document.getElementById("taskScreenshot").files[0];
+    const notes = document.getElementById("taskNotes").value;
+    const taskId = "YOUR_TASK_ID"; // Get this from your task listing
+
+    // 1. Upload screenshot
+    const storageRef = ref(storage, `proofs/${auth.currentUser.uid}/${Date.now()}_${file.name}`);
+    await uploadBytes(storageRef, file);
+    const proofUrl = await getDownloadURL(storageRef);
+
+    // 2. Save to Firestore
+    await addDoc(collection(db, "submissions"), {
+      userId: auth.currentUser.uid,
+      taskId: taskId,
+      proofUrl: proofUrl,
+      notes: notes,
+      status: "pending",
+      timestamp: new Date()
+    });
+
+    alert("Task submitted successfully!");
+  });
+</script>
+  <script type="module">
+  import { auth, onAuthStateChanged } from "./js/firebase.js";
+  
+  onAuthStateChanged(auth, (user) => {
+    if (!user) window.location.href = "auth.html"; // Kick out if not logged in
+  });
+</script>
+
+<script type="module">
+  import { app, analytics } from './js/firebase.js';
+  console.log("Firebase initialized:", app);
+</script>
+
+</body>
+</html>

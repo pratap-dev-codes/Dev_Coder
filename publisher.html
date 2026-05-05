@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publisher - KhudKamao</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --secondary: #2E7D32;
+            --accent: #8BC34A;
+            --dark: #1B5E20;
+            --light: #C8E6C9;
+            --text: #333;
+            --light-text: #f5f5f5;
+            --card-bg: #fff;
+            --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f7;
+            color: var(--text);
+        }
+
+        .publisher-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-left img {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+        }
+
+        .header-left h1 {
+            font-size: 1.2rem;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .balance {
+            background-color: var(--dark);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .publisher-main {
+            padding: 1.5rem;
+            padding-bottom: 80px;
+        }
+
+        .publisher-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .publisher-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .publisher-btn i {
+            font-size: 1.2rem;
+        }
+
+        .publisher-btn.primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .publisher-btn.secondary {
+            background-color: #e0e0e0;
+            color: var(--text);
+        }
+
+        .publisher-btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .publisher-tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 1.5rem;
+        }
+
+        .tab-btn {
+            padding: 0.8rem 1.2rem;
+            border: none;
+            background: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #666;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary);
+        }
+
+        .tasks-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .task-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .task-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .task-status {
+            font-size: 0.8rem;
+            font-weight: 500;
+            padding: 0.3rem 0.8rem;
+            border-radius: 12px;
+        }
+
+        .task-status.active {
+            background-color: var(--light);
+            color: var(--secondary);
+        }
+
+        .task-status.pending {
+            background-color: #fff3e0;
+            color: #ff9800;
+        }
+
+        .task-status.completed {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .task-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .task-reward {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .task-progress {
+            margin-bottom: 1rem;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.3rem;
+            font-size: 0.8rem;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background-color: #e0e0e0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary);
+            border-radius: 3px;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 0.6rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .action-btn.view {
+            background-color: var(--light);
+            color: var(--secondary);
+        }
+
+        .action-btn.edit {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .action-btn.delete {
+            background-color: #ffebee;
+            color: #d32f2f;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--card-bg);
+            display: flex;
+            justify-content: space-around;
+            padding: 0.8rem 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #666;
+            font-size: 0.7rem;
+        }
+
+        .nav-item i {
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 15px;
+            overflow: hidden;
+            animation: modalFadeIn 0.3s;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 1rem;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 1.2rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .modal-footer {
+            padding: 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn.secondary {
+            background-color: #e0e0e0;
+            color: #333;
+        }
+
+        .btn.primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Task Details Modal */
+        .submission-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .submission-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+
+        .submission-details {
+            flex: 1;
+        }
+
+        .submission-details h4 {
+            font-size: 0.9rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .submission-details p {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .submission-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .submission-btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .approve-btn {
+            background-color: var(--light);
+            color: var(--secondary);
+        }
+
+        .reject-btn {
+            background-color: #ffebee;
+            color: #d32f2f;
+        }
+
+        @media (min-width: 768px) {
+            .tasks-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .publisher-actions {
+                flex-direction: row;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="publisher-header">
+        <div class="header-left">
+            <img src="assets/logo.png" alt="KhudKamao Logo">
+            <h1>Publisher</h1>
+        </div>
+        <div class="header-right">
+            <div class="balance">₹2,500.00</div>
+        </div>
+    </header>
+
+    <main class="publisher-main">
+        <div class="publisher-actions">
+            <button class="publisher-btn primary" id="createTaskBtn">
+                <i class="fas fa-plus"></i>
+                <span>Create New Task</span>
+            </button>
+            <button class="publisher-btn secondary" id="switchToUserBtn">
+                <i class="fas fa-exchange-alt"></i>
+                <span>Switch to User Mode</span>
+            </button>
+        </div>
+
+        <div class="publisher-tabs">
+            <button class="tab-btn active" id="activeTasksTab">Active Tasks</button>
+            <button class="tab-btn" id="pendingTasksTab">Pending Approval</button>
+            <button class="tab-btn" id="completedTasksTab">Completed</button>
+        </div>
+
+        <div class="tasks-container" id="publisherTasksList">
+            <div class="task-card">
+                <div class="task-header">
+                    <h3 class="task-title">Install & Review App</h3>
+                    <span class="task-status active">Active</span>
+                </div>
+                <div class="task-meta">
+                    <span>Reward: <span class="task-reward">₹15.00</span></span>
+                    <span>Created: 2 days ago</span>
+                </div>
+                <div class="task-progress">
+                    <div class="progress-info">
+                        <span>Completed: 25/100</span>
+                        <span>25%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 25%"></div>
+                    </div>
+                </div>
+                <div class="task-actions">
+                    <button class="action-btn view">View</button>
+                    <button class="action-btn edit">Edit</button>
+                    <button class="action-btn delete">Delete</button>
+                </div>
+            </div>
+
+            <div class="task-card">
+                <div class="task-header">
+                    <h3 class="task-title">Subscribe YouTube Channel</h3>
+                    <span class="task-status active">Active</span>
+                </div>
+                <div class="task-meta">
+                    <span>Reward: <span class="task-reward">₹8.00</span></span>
+                    <span>Created: 1 week ago</span>
+                </div>
+                <div class="task-progress">
+                    <div class="progress-info">
+                        <span>Completed: 42/100</span>
+                        <span>42%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 42%"></div>
+                    </div>
+                </div>
+                <div class="task-actions">
+                    <button class="action-btn view">View</button>
+                    <button class="action-btn edit">Edit</button>
+                    <button class="action-btn delete">Delete</button>
+                </div>
+            </div>
+
+            <div class="task-card">
+                <div class="task-header">
+                    <h3 class="task-title">Follow Instagram Page</h3>
+                    <span class="task-status pending">Pending</span>
+                </div>
+                <div class="task-meta">
+                    <span>Reward: <span class="task-reward">₹12.00</span></span>
+                    <span>Created: 3 days ago</span>
+                </div>
+                <div class="task-progress">
+                    <div class="progress-info">
+                        <span>Completed: 18/50</span>
+                        <span>36%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 36%"></div>
+                    </div>
+                </div>
+                <div class="task-actions">
+                    <button class="action-btn view">View</button>
+                    <button class="action-btn edit">Edit</button>
+                    <button class="action-btn delete">Delete</button>
+                </div>
+            </div>
+
+            <div class="task-card">
+                <div class="task-header">
+                    <h3 class="task-title">Watch Video & Like</h3>
+                    <span class="task-status completed">Completed</span>
+                </div>
+                <div class="task-meta">
+                    <span>Reward: <span class="task-reward">₹5.00</span></span>
+                    <span>Created: 2 weeks ago</span>
+                </div>
+                <div class="task-progress">
+                    <div class="progress-info">
+                        <span>Completed: 75/75</span>
+                        <span>100%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 100%"></div>
+                    </div>
+                </div>
+                <div class="task-actions">
+                    <button class="action-btn view">View</button>
+                    <button class="action-btn edit">Edit</button>
+                    <button class="action-btn delete">Delete</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="tasks.html" class="nav-item">
+            <i class="fas fa-tasks"></i>
+            <span>Tasks</span>
+        </a>
+        <a href="help.html" class="nav-item">
+            <i class="fas fa-question-circle"></i>
+            <span>Help</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <!-- Create Task Modal -->
+    <div class="modal" id="createTaskModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Task</h3>
+                <button class="close-btn" id="closeCreateTaskModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="taskName">Task Name</label>
+                    <input type="text" id="taskName" placeholder="e.g., Install App, Subscribe Channel">
+                </div>
+                <div class="form-group">
+                    <label for="taskDescription">Task Description</label>
+                    <textarea id="taskDescription" placeholder="Detailed instructions for task completion"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="taskCategory">Task Category</label>
+                    <select id="taskCategory">
+                        <option value="">Select Category</option>
+                        <option value="install">Install App</option>
+                        <option value="subscribe">Subscribe Channel</option>
+                        <option value="follow">Follow Social Media</option>
+                        <option value="watch">Watch Video</option>
+                        <option value="survey">Survey</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="taskLink">Task Link (URL)</label>
+                    <input type="url" id="taskLink" placeholder="https://example.com">
+                </div>
+                <div class="form-group">
+                    <label for="taskReward">Reward per User (₹)</label>
+                    <input type="number" id="taskReward" placeholder="e.g., 10">
+                </div>
+                <div class="form-group">
+                    <label for="taskTotal">Total Users Needed</label>
+                    <input type="number" id="taskTotal" placeholder="e.g., 100">
+                </div>
+                <div class="form-group">
+                    <label for="taskDuration">Task Duration (Days)</label>
+                    <input type="number" id="taskDuration" placeholder="e.g., 7">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary" id="cancelCreateTask">Cancel</button>
+                <button class="btn primary" id="publishTask">Publish Task</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Task Details Modal -->
+    <div class="modal" id="taskDetailsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="taskModalTitle">Task Details</h3>
+                <button class="close-btn" id="closeTaskDetailsModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="task-meta" style="margin-bottom: 1.5rem;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Reward: <strong>₹15.00</strong></span>
+                        <span>Status: <span class="task-status active">Active</span></span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 0.5rem;">
+                        <span>Created: <strong>2 days ago</strong></span>
+                        <span>Duration: <strong>3 days</strong></span>
+                    </div>
+                </div>
+                
+                <div class="task-progress" style="margin-bottom: 1.5rem;">
+                    <div class="progress-info">
+                        <span>Completed: 25/100</span>
+                        <span>25%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 25%"></div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <h4 style="margin-bottom: 0.5rem;">Description</h4>
+                    <p>Download and install the app from Play Store, use it for 3 days, and give a 5-star review. Make sure to keep the app installed for the full duration.</p>
+                </div>
+                
+                <div class="form-group">
+                    <h4 style="margin-bottom: 0.5rem;">Requirements</h4>
+                    <ul style="padding-left: 1.2rem;">
+                        <li>Android device with Play Store</li>
+                        <li>Internet connection</li>
+                        <li>Google account</li>
+                    </ul>
+                </div>
+                
+                <div class="form-group">
+                    <h4 style="margin-bottom: 0.5rem;">Submissions (5 pending review)</h4>
+                    <div class="submission-list" style="max-height: 200px; overflow-y: auto;">
+                        <div class="submission-item">
+                            <div class="submission-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="submission-details">
+                                <h4>User123</h4>
+                                <p>Submitted 2 hours ago</p>
+                            </div>
+                            <div class="submission-actions">
+                                <button class="submission-btn approve-btn">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                <button class="submission-btn reject-btn">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="submission-item">
+                            <div class="submission-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="submission-details">
+                                <h4>User456</h4>
+                                <p>Submitted 1 day ago</p>
+                            </div>
+                            <div class="submission-actions">
+                                <button class="submission-btn approve-btn">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                <button class="submission-btn reject-btn">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn secondary" id="closeTaskDetails">Close</button>
+                <button class="btn primary" id="saveTaskChanges">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const createTaskBtn = document.getElementById('createTaskBtn');
+        const switchToUserBtn = document.getElementById('switchToUserBtn');
+        const activeTasksTab = document.getElementById('activeTasksTab');
+        const pendingTasksTab = document.getElementById('pendingTasksTab');
+        const completedTasksTab = document.getElementById('completedTasksTab');
+        const createTaskModal = document.getElementById('createTaskModal');
+        const closeCreateTaskModal = document.getElementById('closeCreateTaskModal');
+        const cancelCreateTask = document.getElementById('cancelCreateTask');
+        const publishTask = document.getElementById('publishTask');
+        const taskDetailsModal = document.getElementById('taskDetailsModal');
+        const closeTaskDetailsModal = document.getElementById('closeTaskDetailsModal');
+        const closeTaskDetails = document.getElementById('closeTaskDetails');
+        const saveTaskChanges = document.getElementById('saveTaskChanges');
+        const viewTaskBtns = document.querySelectorAll('.action-btn.view');
+
+        // Create task button
+        createTaskBtn.addEventListener('click', () => {
+            createTaskModal.style.display = 'flex';
+        });
+
+        // Switch to user mode
+        switchToUserBtn.addEventListener('click', () => {
+            if (confirm('Switch back to User Mode?')) {
+                window.location.href = 'profile.html';
+            }
+        });
+
+        // Task tabs
+        activeTasksTab.addEventListener('click', () => {
+            activeTasksTab.classList.add('active');
+            pendingTasksTab.classList.remove('active');
+            completedTasksTab.classList.remove('active');
+            // Here you would filter tasks
+        });
+
+        pendingTasksTab.addEventListener('click', () => {
+            pendingTasksTab.classList.add('active');
+            activeTasksTab.classList.remove('active');
+            completedTasksTab.classList.remove('active');
+            // Here you would filter tasks
+        });
+
+        completedTasksTab.addEventListener('click', () => {
+            completedTasksTab.classList.add('active');
+            activeTasksTab.classList.remove('active');
+            pendingTasksTab.classList.remove('active');
+            // Here you would filter tasks
+        });
+
+        // Close create task modal
+        closeCreateTaskModal.addEventListener('click', () => createTaskModal.style.display = 'none');
+        cancelCreateTask.addEventListener('click', () => createTaskModal.style.display = 'none');
+
+        // Publish new task
+        publishTask.addEventListener('click', () => {
+            const name = document.getElementById('taskName').value;
+            const description = document.getElementById('taskDescription').value;
+            const category = document.getElementById('taskCategory').value;
+            const link = document.getElementById('taskLink').value;
+            const reward = document.getElementById('taskReward').value;
+            const total = document.getElementById('taskTotal').value;
+            const duration = document.getElementById('taskDuration').value;
+            
+            if (!name || !description || !category || !reward || !total || !duration) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            alert('Task published successfully!');
+            createTaskModal.style.display = 'none';
+            
+            // Reset form
+            document.getElementById('taskName').value = '';
+            document.getElementById('taskDescription').value = '';
+            document.getElementById('taskCategory').value = '';
+            document.getElementById('taskLink').value = '';
+            document.getElementById('taskReward').value = '';
+            document.getElementById('taskTotal').value = '';
+            document.getElementById('taskDuration').value = '';
+        });
+
+        // View task details
+        viewTaskBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                taskDetailsModal.style.display = 'flex';
+            });
+        });
+
+        // Close task details modal
+        closeTaskDetailsModal.addEventListener('click', () => taskDetailsModal.style.display = 'none');
+        closeTaskDetails.addEventListener('click', () => taskDetailsModal.style.display = 'none');
+
+        // Save task changes
+        saveTaskChanges.addEventListener('click', () => {
+            alert('Task changes saved!');
+            taskDetailsModal.style.display = 'none';
+        });
+
+        // Close modals when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === createTaskModal) createTaskModal.style.display = 'none';
+            if (e.target === taskDetailsModal) taskDetailsModal.style.display = 'none';
+        });
+    </script>
+  <script type="module">
+  import { auth, onAuthStateChanged } from "./js/firebase.js";
+  
+  onAuthStateChanged(auth, (user) => {
+    if (!user) window.location.href = "auth.html"; // Kick out if not logged in
+  });
+</script>
+
+<script type="module">
+  import { app, analytics } from './js/firebase.js';
+  console.log("Firebase initialized:", app);
+</script>
+
+</body>
+</html>
